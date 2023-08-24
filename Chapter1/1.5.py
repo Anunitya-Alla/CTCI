@@ -1,4 +1,4 @@
-import time, pdb
+import time, pdb, math
 import unittest
 from collections import defaultdict
 
@@ -6,35 +6,24 @@ def countEdits(a: str,  b: str) -> bool:
 
     if a == b: 
         return True
+    if abs(len(a) - len(b)) > 1:
+        return False
     
-    arrA = list(a)
-    arrB = list(b)
+    i, j = 0, 0
+    edits = False
 
-    edits = 0
-    i, j  = 0, 0
-
-    while i< len(arrA) and j< len(arrB):
-        #pdb.set_trace()
-
-        if arrA[i] != arrB[j]:
-            if edits != 0 :
-                return False 
-            edits += 1
-            if i+1 < len(arrA) and j+1 < len(arrB) and arrA[i+1] == arrB[j+1] :
+    short, long = (a,b) if len(a) < len(b) else (b,a)
+    #pdb.set_trace()
+    while i < len(short) and j < len(long): 
+        if short[i] != long[j]:
+            if edits:
+                return False
+            edits = True
+            if len(short) == len(long):
                 i += 1
-                j += 1
-            elif j+1 < len(arrB) and arrA[i] == arrB[j+1] : 
-                j += 1 
-            elif   i+1 < len(arrA) and arrA[i+1] == arrB[j] : 
-                i +=1
-            else : 
-                i += 1
-                j += 1
-               
         else:
             i += 1
-            j += 1
-
+        j += 1
 
 
     return True
@@ -83,9 +72,10 @@ class Test(unittest.TestCase):
             for a,b, expected in self.test_cases:
                 for is_unique_chars in self.testable_functions:
                     start = time.perf_counter()
+                    res = is_unique_chars(a,b)
                     assert (
-                        is_unique_chars(a,b) == expected
-                    ), f"{is_unique_chars.__name__} failed for value: {a}, {b}"
+                         res == expected
+                    ), f"{is_unique_chars.__name__} failed for value: {a}, {b}, {res}, {expected}"
                     function_runtimes[is_unique_chars.__name__] += (
                         time.perf_counter() - start
                     ) * 1000
@@ -98,4 +88,4 @@ class Test(unittest.TestCase):
 if __name__ == "__main__":
 
     unittest.main()
-     #res =  countEdits("A","b")
+    #res =  countEdits("pale","ple")
