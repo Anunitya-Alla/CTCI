@@ -4,6 +4,8 @@ from collections import defaultdict
 
 def isUnique(string : str) -> bool :
 
+        # TC: O(n) SC : O(c)
+
     if len(string) > 128 : return False
 
     flag  = [False] * 128
