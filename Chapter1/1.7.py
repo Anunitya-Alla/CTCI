@@ -2,9 +2,21 @@ from collections import defaultdict
 import time, pdb, unittest
 
 def rotateMatrix_python(a) : 
+
+    #Tc: O(n^2) sc: O(1) 
     a = zip(*a)
     a = [list(reversed(row)) for row in a]
     return a
+
+def rotateMatrix_extraSpace(a):
+    n = len(a)
+    res = [[0]*n for _ in range(n)]
+
+    for i,j in zip(range(n),reversed(range(n))):
+
+        for k in range(n):
+            res[k][i] = a[j][k]
+        
 
 
 class Test(unittest.TestCase):
